@@ -1,5 +1,5 @@
-import java.util.Set;
 
+import java.util.Set;
 
 public class Planeta extends CorpoCeleste {
 
@@ -25,6 +25,7 @@ public class Planeta extends CorpoCeleste {
         System.out.println("Tem anéis: " + (temAneis ? "Sim" : "Não"));
         System.out.println("Tem vida: " + (temVida ? "Sim" : "Não"));
         System.out.println("Sistema: " + sistema);
+        System.out.println("------------------------------------\n");
     }
 
     public int getQtdLuas() {
