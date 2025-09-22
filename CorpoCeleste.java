@@ -1,3 +1,4 @@
+
 import java.util.Set;
 
 public class CorpoCeleste {
@@ -33,7 +34,7 @@ public class CorpoCeleste {
         return localizacao;
     }
 
-    public void setIdade(String localizacao) {
+    public void setLocalizacao(String localizacao) {
         this.localizacao = localizacao;
     }
 
@@ -49,7 +50,7 @@ public class CorpoCeleste {
         return massa;
     }
 
-    public void setMasa(Double massa) {
+    public void setMassa(double massa) {
         this.massa = massa;
     }
 
@@ -79,14 +80,12 @@ public class CorpoCeleste {
 
     public void imprimirInfos() {
         System.out.println("------------------------------------");
-        System.out.println(" ");
         System.out.println("Nome: " + nome);
         System.out.println("Localização: " + localizacao);
-        System.out.println("Luz Própria: " + luzPropria);
-        System.out.println("Massa: " + massa);
+        System.out.println("Luz Própria: " + (luzPropria ? "Sim" : "Não"));
+        System.out.println("Massa: " + String.format("%.2e", massa) + " kg");
         System.out.println("Diâmetro: " + diametro + " km");
         System.out.println("Composição: " + composicao);
         System.out.println("Órbita: " + orbita);
-        System.out.println(" ");
     }
 }
