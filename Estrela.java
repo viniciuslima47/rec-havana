@@ -1,7 +1,6 @@
 import java.util.Set;
 
 public class Estrela extends CorpoCeleste {
-
     private String tipoEspectral;
     private double luminosidade;
     private String estagioEvolutivo;
@@ -9,8 +8,8 @@ public class Estrela extends CorpoCeleste {
     private double temperatura;
 
     public Estrela(String nome, String localizacao, boolean luzPropria, double massa, double diametro,
-                   Set<ComposicaoTipo> composicao, String orbita,
-                   String tipoEspectral, double luminosidade, String estagioEvolutivo, String tipo, double temperatura) {
+            Set<ComposicaoTipo> composicao, String orbita,
+            String tipoEspectral, double luminosidade, String estagioEvolutivo, String tipo, double temperatura) {
         super(nome, localizacao, luzPropria, massa, diametro, composicao, orbita);
         this.tipoEspectral = tipoEspectral;
         this.luminosidade = luminosidade;
@@ -19,11 +18,11 @@ public class Estrela extends CorpoCeleste {
         this.temperatura = temperatura;
     }
 
-    public String getTipoEspectral(){
+    public String getTipoEspectral() {
         return this.tipoEspectral;
     }
 
-    public void setTipoEspectral(String tipoEspectral){
+    public void setTipoEspectral(String tipoEspectral) {
         this.tipoEspectral = tipoEspectral;
     }
 
@@ -59,6 +58,82 @@ public class Estrela extends CorpoCeleste {
         this.temperatura = temperatura;
     }
 
+    public void atualizarTipo() {
+        double massaSolar = getMassa() / 1.989e30;
+        
+        if (massaSolar < 0.08) {
+            tipo = "Anã marrom";
+            estagioEvolutivo = "Muito pouco massiva";
+        } 
+        else if (massaSolar < 0.5) {
+            if (tipoEspectral.startsWith("M")) {
+                tipo = "Anã vermelha";
+            } else {
+                tipo = "Estrela de baixa massa";
+            }
+            estagioEvolutivo = "Pouco massiva";
+        } 
+        else if (massaSolar < 8) {
+            if (tipoEspectral.startsWith("G")) {
+                tipo = "Estrela amarela (Sequência Principal)";
+            } else if (tipoEspectral.startsWith("F")) {
+                tipo = "Estrela branco-amarela";
+            } else if (tipoEspectral.startsWith("A")) {
+                tipo = "Estrela branca";
+            } else if (tipoEspectral.startsWith("B")) {
+                tipo = "Estrela azul-branca";
+            } else if (tipoEspectral.startsWith("K")) {
+                tipo = "Estrela laranja";
+            } else {
+                tipo = "Estrela da sequência principal";
+            }
+            estagioEvolutivo = "Massa intermediária";
+        } 
+        else if (massaSolar < 20) {
+            tipo = "Estrela massiva (Classe B)";
+            estagioEvolutivo = "Massiva";
+        } 
+        else if (massaSolar < 100) {
+            tipo = "Estrela supermassiva (Classe O)";
+            estagioEvolutivo = "Muito massiva";
+        } 
+        else {
+            tipo = "Estrela hipergigante";
+            estagioEvolutivo = "Extremamente massiva";
+        }
+
+        if (tipoEspectral.contains("V")) {
+            tipo += " - Sequência Principal";
+        } else if (tipoEspectral.contains("III")) {
+            tipo = "Gigante " + tipo;
+        } else if (tipoEspectral.contains("II")) {
+            tipo = "Subgigante " + tipo;
+        } else if (tipoEspectral.contains("I")) {
+            tipo = "Supergigante " + tipo;
+        } else if (tipoEspectral.contains("VII")) {
+            tipo = "Anã branca";
+        }
+    }
+
+    public void imprimirTempoDeVidaRestante() {
+        double massaSolar = getMassa() / 1.989e30;
+        double tempoVida;
+        
+        if (massaSolar < 0.08) {
+            tempoVida = 10000000;
+        } else if (massaSolar < 0.5) {
+            tempoVida = 1000000;
+        } else if (massaSolar < 8) {
+            tempoVida = 10000 / Math.pow(massaSolar, 2.5);
+        } else if (massaSolar < 20) {
+            tempoVida = 1000 / Math.pow(massaSolar, 2.5);
+        } else {
+            tempoVida = 100 / Math.pow(massaSolar, 2.5);
+        }
+        
+        System.out.println("Tempo de vida restante: " + String.format("%.2f", tempoVida) + " milhões de anos");
+    }
+
     @Override
     public void imprimirInfos() {
         super.imprimirInfos();
@@ -67,21 +142,7 @@ public class Estrela extends CorpoCeleste {
         System.out.println("Estágio Evolutivo: " + estagioEvolutivo);
         System.out.println("Tipo: " + tipo);
         System.out.println("Temperatura (K): " + temperatura);
-    }
-
-    // Methods
-
-    public void atualizarTipo() {
-        if (getMassa() > 10 && tipoEspectral.startsWith("O")) {
-            this.tipo = "Estrela massiva";
-        } else {
-            this.tipo = "Outro tipo";
-        }
-    }
-
-    public void imprimirTempoVidaRest() {
-        double vidaTotal = 10e9;
-        double vidaRestante = vidaTotal - (getMassa() * 1e8);
-        System.out.println("Tempo de vida restante: " + vidaRestante + " anos");
+        imprimirTempoDeVidaRestante();
+        System.out.println("------------------------------------\n");
     }
 }
